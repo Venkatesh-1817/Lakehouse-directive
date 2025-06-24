@@ -1,6 +1,6 @@
 
 - name: bronze_orders
-  source: /Workspace/Users/your.name@databricks.com/raw/ecommerce_orders.csv
+  source: abfss://lakehouse@udemydatalakestorage001.dfs.core.windows.net/
   format: csv
   table: uc_catalog.edulytics.bronze_orders
   expectations:

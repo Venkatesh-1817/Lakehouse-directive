@@ -19,7 +19,7 @@ df_raw = spark.read \
     .format("csv") \
     .option("header", "true") \
     .schema(schema) \
-    .load("path") \
+    .load("abfss://lakehouse@udemydatalakestorage001.dfs.core.windows.net/") \
     .withColumn("source_file", input_file_name())
 
 # Save to Delta table (bronze layer)
