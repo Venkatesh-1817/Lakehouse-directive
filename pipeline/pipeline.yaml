@@ -1,0 +1,26 @@
+
+- name: bronze_orders
+  source: /Workspace/Users/your.name@databricks.com/raw/ecommerce_orders.csv
+  format: csv
+  table: uc_catalog.edulytics.bronze_orders
+  expectations:
+    - expect column customer_id to be not null
+    - expect column order_id to be not null
+
+- name: silver_orders
+  source: bronze_orders
+  notebook: notebooks/silver/clean_orders.py
+  table: uc_catalog.edulytics.silver_orders
+
+- name: dim_customer_scd2
+  source: silver_orders
+  notebook: notebooks/gold/build_dim_customer_scd2.py
+  table: uc_catalog.edulytics.dim_customer
+  merge:
+    keys: [customer_id]
+    type: scd2
+    scd2_config:
+      start_time_column: effective_start_time
+      end_time_column: effective_end_time
+      current_flag_column: is_current
+      updated_at_column: updated_at
